@@ -80,7 +80,7 @@ public class ColorBlobTrainer implements ICameraFrameUpdateListener {
         // will
         // connect to a local webcam
         //        String ip = null;
-        String ip = ECameraType.ALIGNMENT_CAMERA.getCameraIP();
+        String ip = ECameraType.FIELD_CAMERA.getCameraIP();
 
         if(ECameraConfig.USE_LOCAL_IF_NOT_AVAILABLE.getBooleanValue() && !OpenCVUtils.isAvailable(ip)) {
             ip = null;

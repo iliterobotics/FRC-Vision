@@ -41,12 +41,13 @@ public class CameraCalibration {
 		int board_w = pNumInnerCornersX;
 		int board_h = pNumInnerCornersY;
 		Size board_sz = new Size(board_w, board_h);
-		//Real location of the cornersin 3D
+		//Real location of the corners in 3D
 		MatOfPoint2f corners = new MatOfPoint2f();
 		Size imageSize = null;
 		List<Mat>imagePoints = new ArrayList<Mat>();
 
 		List<Mat>objs = new ArrayList<Mat>();
+		int count = 0;
 		for(Mat img : pTrainingImages) {
 			Mat gray = new Mat();
 			imageSize = img.size();
@@ -71,7 +72,10 @@ public class CameraCalibration {
 				Imgproc.cornerSubPix(gray, corners, new Size(11,11), new Size(-1,-1), aCriteria);
 				Calib3d.drawChessboardCorners(gray, board_sz, corners, true);
 				imagePoints.add(corners);
-			} 
+			} else {
+				System.out.println("Did not find idx= " + count);
+			}
+			count++;
 
 		}
 
@@ -106,13 +110,14 @@ public class CameraCalibration {
 	public static void main(String[] args) {
 		OpenCVUtils.init();
 
-		Mat chessSlant = Highgui.imread("C:/Users/Christopher/gitrepos/FRC-Vision/chessboard2.png");
-		Mat chessReg = Highgui.imread("C:/Users/Christopher/gitrepos/FRC-Vision/chessboard.png");
-		
+		Mat chessboard = null;
 		List<Mat>allTraining = new ArrayList<Mat>();
-		allTraining.add(chessSlant);
-		allTraining.add(chessReg);
-		System.out.println(calibrateCamera(9, 6,allTraining));
+		for(int x= 1;x < 11; x++){
+			chessboard = Highgui.imread("src/main/resources/images/Chess"+x+".png");
+			allTraining.add(chessboard);
+		}
+		
+		System.out.println(calibrateCamera(4, 3,allTraining));
 
 	}
 
